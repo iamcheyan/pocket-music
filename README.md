@@ -1,5 +1,12 @@
 # Pocket Music
 
+
+> **PocketJS port (product target):** `apps/pocket-music/pocket/` is the
+> native PocketJS program (Solid TSX → `.pocket` → `pocket-linux-kms`). The
+> `frontend/` tree remains the frozen React design reference and is not
+> extended. Frames: `docs/pocket/`; verification:
+> `apps/pocket-music/POCKETJS-VERIFICATION.md`.
+
 A reference digital music player for desktop Linux, designed as the flagship
 application for the future PJOS runtime.
 

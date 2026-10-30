@@ -1,0 +1,54 @@
+{
+  "app": "dev.pocket-music.pocket",
+  "output": "pocket-music",
+  "viewport": {
+    "logical": [
+      360,
+      240
+    ],
+    "density": 2,
+    "physical": [
+      720,
+      480
+    ]
+  },
+  "frames": 130,
+  "shots": [
+    {
+      "name": "home",
+      "file": "screen-home.png",
+      "sha256": "5b78b19797bf90abadb0ef0134de614ac7cab425d3fdf1c90b43a3325a4f7381",
+      "bytes": 39229
+    },
+    {
+      "name": "home-focus",
+      "file": "screen-home-focus.png",
+      "sha256": "9067351359a32cf0678e1e6a7cf31e3eb1f3e036266f4882c95fd0d3fc3df47d",
+      "bytes": 38611
+    },
+    {
+      "name": "detail",
+      "file": "screen-detail.png",
+      "sha256": "aac738c0f05a9d8c9a4fee519d7e2d6254deab5f7bb4063833986aeae60b47d4",
+      "bytes": 32339
+    },
+    {
+      "name": "detail-action",
+      "file": "screen-detail-action.png",
+      "sha256": "6ca7302d095eb5bc8164deb91ee45586ab07cc44e89305e046a055b3ec4229a1",
+      "bytes": 32129
+    },
+    {
+      "name": "settings",
+      "file": "screen-settings.png",
+      "sha256": "939427e8a2476b5e61663802127bff408adb7f5df15aae3720333c8933cae2a0",
+      "bytes": 37964
+    },
+    {
+      "name": "settings-toggled",
+      "file": "screen-settings-toggled.png",
+      "sha256": "25e03099751c030f9caec28b8c0a62b91c6c9c99a1a52a03cb8e9f7cf4e30118",
+      "bytes": 37558
+    }
+  ]
+}
