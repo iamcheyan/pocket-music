@@ -404,6 +404,26 @@ button:disabled {
   white-space:nowrap;
   text-overflow:ellipsis;
   overflow:hidden}
+.track-list {
+  display:grid}
+.track-row {
+  min-width:0;
+  display:grid;
+  grid-template-columns:2rem 2.4rem minmax(8rem,1fr) minmax(6rem,.7fr) 3rem 2rem;
+  gap:.7rem;
+  align-items:center;
+  padding:.5rem .25rem;
+  border-bottom:1px solid var(--line);
+  min-height:3.35rem}
+.row-cover {
+  border:0;
+  width:2.35rem;
+  height:2.35rem;
+  border-radius:.45rem;
+  background:var(--panel-2);
+  color:#c8e889;
+  display:grid;
+  place-items:center}
 .row-index,.row-time {
   color:#77796f;
   font-size:.66rem}
@@ -758,6 +778,14 @@ input[type=range] {
   --shadow:0 22px 70px rgba(57,58,39,.11)}
 [data-theme=light] .sidebar {
   background:#e9eae3}
+[data-theme=light] .nav-item,[data-theme=light] .nav-label {
+  color:#55574e}
+[data-theme=light] .nav-item:hover,[data-theme=light] .nav-item.selected {
+  color:#1d1e19}
+[data-theme=light] .brand-light {
+  color:#5d6055}
+[data-theme=light] .sidebar-note {
+  color:#4e5148}
 [data-theme=light] .hero {
   background:#e5e8d9}
 [data-theme=light] .hero-copy p {
