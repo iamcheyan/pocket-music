@@ -25,7 +25,7 @@ Set `MUSICD_MOCK=true` to seed a deterministic demo library when the database ha
 
 See [SCREENSHOTS.md](SCREENSHOTS.md) for Chromium screenshots captured from the running application.
 
-The 10,000-track benchmark generated deterministic SQLite rows and measured a paired FTS5 search plus paginated list query using `go test -run '^$' -bench '^BenchmarkSearchAndLibrary10K$' -benchtime=1x -benchmem` on the HX90 (AMD Ryzen 9 5900HX): **23.35 ms/op**, 67,800 B/op, 1,060 allocs/op. This is one benchmark iteration; timings are a local baseline, not a multi-run distribution.
+The 10,000-track benchmark generates deterministic SQLite rows and measures a paired FTS5 search plus paginated list query with `go test -run '^$' -bench '^BenchmarkSearchAndLibrary10K$' -benchtime=3x -benchmem` on the HX90 (AMD Ryzen 9 5900HX): **21.94 ms/op** across 3 iterations, 67,768 B/op, 1,059 allocs/op. Single-iteration runs measured 22–23 ms; timings are a local baseline, not a cross-machine guarantee.
 
 The screenshot index lists 17 captured files under `docs/screenshots/`, including every required view and all four required sizes. The files were captured from a running mock-mode application with Chromium headless; filenames use PNG IHDR dimensions.
 
