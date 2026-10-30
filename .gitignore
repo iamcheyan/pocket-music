@@ -1,4 +1,6 @@
 node_modules/
 dist/
 *.tsbuildinfo
+build/
+apps/pocket-music/frontend/.test-build/
 apps/pocket-music/backend/backend
