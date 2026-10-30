@@ -21,16 +21,18 @@ Status reflects integration evidence captured on 2026-10-30 from the running app
 - [x] Generated a 2-second WAV with ffmpeg; scan indexed its title, artist, album, year, duration, and path.
 - [x] 10,000-row paired search/list benchmark: 23.35 ms/op (single iteration, see README).
 - [x] Chromium exercised the Home, Library, playback, queue, and Settings flows at 320×240; screenshots cover all named views, Light/Dark examples, and all required viewport dimensions.
+- [x] Six viewports (320×240, 480×320, 640×480, 720×720, 1280×720, 1920×1080) showed no horizontal overflow; 1x/1.5x/2x/3x DPI were measured at 480×320 with identical row height and font size.
+- [x] Keyboard Space/Arrow/Escape navigation and Gamepad API button/axis handling were exercised. Gamepad input is edge-triggered: holding a button fires once.
+- [x] Favorites for track/album/artist, queue add/play_next/reorder/remove, and M3U export→import round-trip (2 tracks) were executed against the running service.
 
 ## Remaining work
 
-- [ ] Execute `mpv` playback on a real local audio file with `--ao=null`; this was not exercised during integration.
-- [ ] Validate the full screen and DPI matrix at 1x, 1.5x, 2x, and 3x. Responsive behavior and 320×240 were checked; all DPI combinations were not individually measured.
+- [ ] Validate on physical DAP/handheld hardware and with a real analog audio output device.
 - [ ] Add and execute a true multi-version schema migration path; current database startup initializes schema version 1.
 
 ## Known limitations
 
-Remote Bilibili, Navidrome, and Jellyfin providers are extension points documented in [ARCHITECTURE.md](ARCHITECTURE.md) and are not implemented. Real mpv playback and full DPI matrix remain unverified on this host.
+Remote Bilibili, Navidrome, and Jellyfin providers are extension points documented in [ARCHITECTURE.md](ARCHITECTURE.md) and are not implemented. On this host the audio engine runs with `--ao=null`; playback state and EOF progression are verified, but no sound is emitted.
 
 ## Future PJOS migration
 
