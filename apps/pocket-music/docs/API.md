@@ -1,20 +1,11 @@
 # HTTP API
 
-All API paths use the `/api` prefix. JSON requests and responses use `application/json`; errors follow `{"error":{"code":"...","message":"..."}}`. The examples below describe the required contract. They are not claims that each route has been implemented or exercised; confirm field names against the server before integration clients depend on them.
+All paths use the `/api` prefix. JSON responses use `application/json`; errors have the shape `{"error":{"code":"...","message":"..."}}`. Routes and response shapes below reflect the current `musicd` handlers. Several handlers do not enforce HTTP methods beyond the routes stated.
 
 ## Health and library
 
 ```http
 GET /api/health
-```
-
-Returns service/provider identity, mock status, and audio engine status. Example shape:
-
-```json
-{"provider":"local","mock":false,"audio":{"engine":"mpv","status":"ready"}}
-```
-
-```http
 GET /api/home
 GET /api/library/songs?q=blue&page=1&limit=50
 GET /api/library/albums?q=blue
@@ -26,13 +17,11 @@ GET /api/artists/{id}
 GET /api/tracks/{id}
 ```
 
-List endpoints return JSON collections; song results should be paginated, and album detail includes tracks and cover information. Example list response:
+`/api/health` returns provider name, mock flag, and audio status/output, e.g. `{ "provider":"local", "mock":false, "audio":{"status":"ready","ao":"null"} }`.
 
-```json
-{"items":[{"id":"track-id","title":"Blue Train","artist":"Artist","album":"Album","duration":120.5}],"page":1,"limit":50,"total":1}
-```
+Track objects contain `id`, `title`, `artist`, `album`, `genre`, `year`, `duration`, `path` (omitted if empty), and `added_at`. Songs returns `{ "items": [...], "total": n, "page": n, "limit": n }`; page defaults to 1, limit defaults to 50, and values above 500 reset to 50. Song `q` uses FTS. Album items contain `id`, `title`, `artist`, `year`, `track_count`; artist items contain `id`, `name`, `track_count`; genre/folder items contain `name`. Collections return `{ "items": [...], "total": n }`. `q` filters album/artist names and is ignored for genres/folders.
 
-`GET /api/home` supplies Recently Added, Recently Played, and Most Played sections.
+Home returns `{ "recently_added": [...], "recently_played": [...], "most_played": [...] }`, up to four track objects each. Album detail returns album metadata and tracks; artist detail returns `{ "id":"...", "name":"...", "tracks":[...] }`. Cover binary data is not currently provided by `/api/cover`.
 
 ## Search, playlists, and favorites
 
@@ -50,18 +39,11 @@ POST   /api/favorites
 DELETE /api/favorites
 ```
 
-Search `type` accepts `all`, `song`, `album`, `artist`, or `playlist`. Playlist item operations support add, remove, and reorder; import/export support M3U and M3U8. Favorite operations identify a target type and ID in the request body. Exact body schemas should track the implementation.
+Search returns `{ "songs": [...], "albums": [...], "artists": [...], "playlists": [...] }`. `type` filters to `all`, `song`, `album`, `artist`, or `playlist`; song matches use FTS5 and album/artist/playlist matches use SQLite name/title queries, each limited to 50 results.
 
-Example create request:
+Playlist listing returns `{ "items": [{"id":1,"name":"...","created_at":"..."}] }`. Creation accepts `{ "name":"Favorites mix" }` and returns `{ "id":1,"name":"Favorites mix" }`. Detail returns `{ "id":1,"name":"...","tracks":[...] }`. Update accepts a name; delete returns success status. Item actions (`add`, `remove`, `reorder`) accept track ID and/or position fields and return updated playlist detail. Export supports M3U/M3U8. Import reads playlist content and returns the imported playlist result.
 
-```http
-POST /api/playlists
-Content-Type: application/json
-```
-
-```json
-{"name":"Favorites mix"}
-```
+Favorites POST accepts `{ "kind":"track|album|artist", "id":"..." }`; `track_id` is an alternate identifier. DELETE reads `kind` and `id` from a JSON body and returns 204. No favorites listing route is present.
 
 ## Playback and queue
 
@@ -77,25 +59,25 @@ GET  /api/player/state
 POST /api/queue
 ```
 
-`POST /api/play` accepts a track ID and mode (`normal`, `repeat_all`, `repeat_one`, or `shuffle`). Player state includes current track, progress, volume, mode, and queue. Queue operations support add, play-next, remove, and reorder. Example:
+Play accepts `{ "track_id":"track-id", "mode":"normal" }` and returns player state. Supported modes are `normal`, `repeat_all`, `repeat_one`, and `shuffle`; repeat and queue-advance behavior is handled by musicd. Player state has `track`, `playing`, `position`, `duration`, `volume`, `mode`, and `queue`. `/api/player/state` synchronizes the current position and duration from mpv IPC for local tracks. Seek accepts `{ "position":42.5 }`; volume accepts `{ "volume":75 }`; both return player state.
 
-```json
-{"track_id":"track-id","mode":"normal"}
-```
+Queue accepts `{ "action":"add|play_next|remove|reorder", "track_id":"...", "index":0, "to":1 }`. Remove uses `index`; reorder moves the item at `index` to `to`. Response is `{ "queue": [...] }`.
 
-Action-specific request fields and success responses must be confirmed from the handlers.
-
-## Media, scan, and settings
+## Media, scan, settings, and stats
 
 ```http
 GET  /api/cover/{album_id}
 GET  /api/lyrics/{track_id}
 GET  /api/media/{track_id}
 POST /api/scan
+GET  /api/scan
 GET  /api/scan/status
+POST /api/scan/cancel
 GET  /api/settings
 PUT  /api/settings
 GET  /api/stats
 ```
 
-Media streaming supports HTTP Range requests. Lyrics return parsed LRC timing data when available. Scan status reports current progress using the implementation's polling or event mechanism. Settings include language, theme, music folder, cache size, scan controls, audio output, and reserved proxy/network fields. Stats include play time and most played artists/albums. Media, binary cover, and status responses may use non-JSON content types as appropriate.
+`/api/cover/{album_id}` returns cover bytes in priority order: stored album cover path, `folder.jpg`, `cover.jpg`, then embedded artwork extracted with ffmpeg. Missing album/art returns 404. Lyrics return timestamped lines parsed from a sibling `.lrc`, with embedded lyrics from ffprobe as fallback. Media supports HTTP Range through `http.ServeContent`.
+
+Scan POST returns `{ "started":true }` or a structured conflict if scanning is already active. Both GET status paths return `scanning`, `found`, `total`, and optional `current`/`error`; cancel POST returns `{ "cancelled":true }`. Settings GET returns `{ "settings": {"key":"value"} }`; PUT accepts that wrapper and applies `music_folder`, `audio_output`, and other stored settings. `MUSICD_AO=null` is the headless audio default. Stats returns accumulated play time and most played tracks/artists/albums.
