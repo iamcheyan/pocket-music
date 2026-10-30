@@ -1,8 +1,8 @@
 # Verification — pocket-music @ 2026-10-31
 
 - Verdict: PASS
-- Commit: `__COMMIT__` (fixes + screenshots; this document is the following commit)
-- Remote: `__REMOTE__`
+- Commit: `494d1987a1eb5d2d84b7460fc27deeeab8982d21` (fixes + screenshots; this document is the following commit)
+- Remote: `494d1987a1eb5d2d84b7460fc27deeeab8982d21`
 - Runtime: `make build` then `MUSICD_ADDR=127.0.0.1:8765 MUSICD_DB=/tmp/pm/music.db MUSICD_CACHE=/tmp/pm/cache MUSICD_WEB_DIR=$PWD/apps/pocket-music/frontend/dist MUSICD_MOCK=true ./build/musicd` ; port 8765 ; backend Go `musicd`
 - Toolchain: go 1.26.0, node v22.23.3, Chrome 155.0.8059.84, mpv present (`/usr/bin/mpv`)
 
