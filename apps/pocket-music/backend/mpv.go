@@ -44,18 +44,27 @@ func (m *mpvClient) getProperty(name string) (any, error) {
 	return nil, sc.Err()
 }
 
-func (m *mpvClient) status() (position, duration float64, paused bool, err error) {
+func (m *mpvClient) status() (position, duration float64, paused, finished bool, err error) {
 	p, e := m.getProperty("time-pos")
-	if e != nil {
-		return 0, 0, false, e
+	finished = e != nil
+	if finished {
+		idle, idleErr := m.getProperty("idle-active")
+		if idleErr != nil {
+			return 0, 0, false, false, idleErr
+		}
+		finished, _ = idle.(bool)
+		if !finished {
+			return 0, 0, false, false, nil
+		}
+		p = 0.0
 	}
 	d, e := m.getProperty("duration")
-	if e != nil {
-		return 0, 0, false, e
+	if e != nil && !finished {
+		return 0, 0, false, false, e
 	}
 	a, e := m.getProperty("pause")
-	if e != nil {
-		return 0, 0, false, e
+	if e != nil && !finished {
+		return 0, 0, false, false, e
 	}
 	if v, ok := p.(float64); ok {
 		position = v
@@ -64,7 +73,7 @@ func (m *mpvClient) status() (position, duration float64, paused bool, err error
 		duration = v
 	}
 	paused, _ = a.(bool)
-	return position, duration, paused, nil
+	return position, duration, paused, finished, nil
 }
 
 type mpvClient struct {

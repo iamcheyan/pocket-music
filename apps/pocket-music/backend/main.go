@@ -529,30 +529,35 @@ func (s *Server) syncPlayerState() {
 		return
 	}
 	s.playerMu.Unlock()
-	position, duration, paused, err := s.mpv.status()
+	position, duration, paused, finished, err := s.mpv.status()
 	if err != nil {
 		return
 	}
 	s.playerMu.Lock()
-	if s.player.Track != nil {
-		if s.player.Track != nil && s.player.Duration > 0 && position >= s.player.Duration-0.25 {
-			s.completeTrack()
-		} else {
-			s.player.Position = position
-			if duration > 0 {
-				s.player.Duration = duration
-			}
-			s.player.Playing = !paused
-		}
+	defer s.playerMu.Unlock()
+	if s.player.Track == nil {
+		return
 	}
-	s.playerMu.Unlock()
+	if finished {
+		s.player.Position = s.player.Duration
+		s.completeTrack()
+		return
+	}
+	s.player.Position = position
+	if duration > 0 {
+		s.player.Duration = duration
+	}
+	s.player.Playing = !paused
+	if s.player.Duration > 0 && position >= s.player.Duration-0.25 {
+		s.completeTrack()
+	}
 }
 func (s *Server) completeTrack() {
 	if s.player.Track == nil {
 		return
 	}
 	t := *s.player.Track
-	s.db.Exec(`UPDATE history SET completion_rate=1 WHERE track_id=?`, t.ID)
+	s.db.Exec(`INSERT INTO history(track_id,last_played,completion_rate) VALUES(?,CURRENT_TIMESTAMP,1) ON CONFLICT(track_id) DO UPDATE SET completion_rate=1`, t.ID)
 	s.advance(1)
 }
 func (s *Server) advance(delta int) {
