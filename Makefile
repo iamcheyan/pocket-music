@@ -10,7 +10,7 @@ VITE_HOST ?= 0.0.0.0
 # Start musicd and Vite together; Ctrl-C stops both processes.
 dev:
 	@set -eu; \
-	  MUSICD_ADDR='$(MUSICD_ADDR)' go run ./$(BACKEND_DIR) & backend_pid=$$!; \
+	  (cd $(BACKEND_DIR) && MUSICD_ADDR='$(MUSICD_ADDR)' go run .) & backend_pid=$$!; \
 	  frontend_pid=; \
 	  cleanup() { \
 	    trap - EXIT INT TERM; \
@@ -24,12 +24,12 @@ dev:
 	  wait "$$frontend_pid"
 
 backend:
-	MUSICD_ADDR='$(MUSICD_ADDR)' go run ./$(BACKEND_DIR)
+	cd $(BACKEND_DIR) && MUSICD_ADDR='$(MUSICD_ADDR)' go run .
 
 frontend:
 	npm --prefix $(FRONTEND_DIR) run dev -- --host $(VITE_HOST)
 
-# Run available backend and frontend correctness checks in one command.
+# Run backend tests, frontend types, and i18n catalog parity.
 test: test-backend test-frontend
 
 test-backend:
