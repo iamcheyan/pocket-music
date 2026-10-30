@@ -1,37 +1,140 @@
 # Pocket Music
 
-Pocket Music is a desktop Linux music player built as a React + TypeScript web UI, a Go `musicd` service, SQLite storage, and mpv audio playback. The UI communicates with the service over HTTP JSON; it does not access library files or control mpv directly. The API boundary is intended to support a future PocketJS Runtime UI.
+Pocket Music is a desktop Linux music player built as a React + TypeScript web
+UI, a Go `musicd` service, SQLite storage and mpv audio playback. The UI talks to
+the service over HTTP JSON; it never scans a directory, reads an audio file or
+controls the audio engine itself.
+
+The same repository builds two things:
+
+- **Development mode** — Vite on `:5173` with `/api` proxied to `musicd` on
+  `:8765`, giving hot reload while the Go service keeps its state.
+- **Single-binary desktop mode** — `make build` compiles the UI into
+  `frontend/dist` and the service serves it from `MUSICD_WEB_DIR`, so a desktop
+  session is one process with no Node runtime.
 
 ## Quick start
 
-Prerequisites: Go, Node.js/npm, and mpv. From the repository root, install frontend dependencies and start both development processes:
+Prerequisites: Go 1.24+, Node.js 20+, npm, and mpv (audio is optional — the
+default output is `null`).
 
 ```sh
 npm --prefix apps/pocket-music/frontend install
-make dev
+MUSICD_MOCK=true make dev      # demo library, http://127.0.0.1:5173
 ```
 
-Open <http://127.0.0.1:5173>. The frontend uses Vite on port 5173 and proxies `/api` to `127.0.0.1:8765`. The Go service listens on `:8765` by default. Stop the services with Ctrl-C. `MUSICD_ADDR` overrides the backend listen address.
+For a real library:
 
-`make test` runs backend `go test ./...`, the frontend `typecheck` script, and an esbuild-bundled check that the English, Simplified Chinese, and Japanese catalogs have identical keys. It passed on 2026-10-30.
+```sh
+MUSICD_MUSIC_DIR="$HOME/Music" make dev
+```
 
-## Library configuration
+then open **Settings → Scan now**. `make serve` runs the compiled single-binary
+build instead.
 
-The service reads `MUSICD_ADDR`, `MUSICD_DB`, `MUSICD_MUSIC_DIR`, `MUSICD_MOCK`, `MUSICD_MPV`, and `MUSICD_AO`. Defaults are `:8765`, `musicd.db`, `$HOME/Music`, mock disabled, and `--ao=null` audio output. The health response reports provider, mock status, and audio status/output.
+## Configuration
 
-Set `MUSICD_MOCK=true` to seed a deterministic demo library when the database has no tracks: 64 demo tracks, eight artists, and eight albums. For a real library, set `MUSICD_MUSIC_DIR` and scan through `POST /api/scan`. The scanner accepts MP3, FLAC, AAC, M4A, OGG, WAV, and APE and uses ffprobe for metadata. A generated 2-second WAV was scanned into a temp directory with correct title, artist, album, year, genre, duration, and path; playback with `--ao=null` advanced the position and fired completion/queue advancement.
+| Variable           | Default                 | Purpose                                       |
+| ------------------ | ----------------------- | --------------------------------------------- |
+| `MUSICD_ADDR`      | `:8765`                 | HTTP listen address                           |
+| `MUSICD_DB`        | `musicd.db`             | SQLite file                                   |
+| `MUSICD_MUSIC_DIR` | `$HOME/Music`           | Library root scanned on demand                |
+| `MUSICD_MOCK`      | `false`                 | Seed a deterministic 240-track demo library   |
+| `MUSICD_AO`        | `null`                  | mpv audio output (`null`, `pulse`, `alsa`, …) |
+| `MUSICD_MPV`       | `mpv`                   | mpv executable                                |
+| `MUSICD_CACHE`     | `$TMPDIR/musicd-cache`  | Extracted cover art cache                     |
+| `MUSICD_WEB_DIR`   | *(unset)*               | Serve the compiled UI instead of only `/api`  |
 
-## Screenshots and performance
+Persisted settings (language, theme, music folder, cache size, auto scan, audio
+output) live in the `settings` table and take precedence over the environment on
+the next start.
 
-See [SCREENSHOTS.md](SCREENSHOTS.md) for Chromium screenshots captured from the running application.
+## Demo library
 
-The 10,000-track benchmark generates deterministic SQLite rows and measures a paired FTS5 search plus paginated list query with `go test -run '^$' -bench '^BenchmarkSearchAndLibrary10K$' -benchtime=3x -benchmem` on the HX90 (AMD Ryzen 9 5900HX): **21.94 ms/op** across 3 iterations, 67,768 B/op, 1,059 allocs/op. Single-iteration runs measured 22–23 ms; timings are a local baseline, not a cross-machine guarantee.
+`MUSICD_MOCK=true` seeds, once, into an empty database:
 
-The screenshot index lists 17 captured files under `docs/screenshots/`, including every required view and all four required sizes. The files were captured from a running mock-mode application with Chromium headless; filenames use PNG IHDR dimensions.
+- 8 artists × 3 albums × 10 tracks = **240 tracks** with realistic titles,
+  genres, years, durations and artist/album folder paths;
+- listening history for roughly a quarter of the tracks (plays, skips,
+  completion rate) so Home and Statistics are populated;
+- 8 favourite tracks, 4 favourite albums, 3 favourite artists;
+- 3 playlists of 5–7 tracks.
 
-## Documentation
+Mock playback runs on the service clock instead of mpv, so the Now Playing
+screen, lyrics panel, queue advancement and completion accounting all work on a
+headless host. Demo tracks are database rows only — nothing is read from disk.
 
-- [ARCHITECTURE.md](ARCHITECTURE.md) — service boundaries, mpv IPC, providers, and PJOS migration.
-- [API.md](API.md) — current routes and request/response shapes.
-- [DATABASE.md](DATABASE.md) — SQLite tables, indexes, and schema behavior.
-- [ROADMAP.md](ROADMAP.md) — implementation status and remaining evidence.
+## Product surface
+
+- **Home** — recently added, recently played, most played, favourite tracks,
+  favourite albums.
+- **Library** — songs (paginated, 100 per page), albums, artists, genres,
+  folders (expandable, backed by a folder filter), favourites.
+- **Detail pages** — album (cover, year, duration, play all, add to queue,
+  favourite, numbered tracks) and artist (albums plus all tracks).
+- **Now Playing** — art, title, artist, album links, timeline, transport,
+  favourite, playback mode, volume, synced lyrics, up-next preview.
+- **Queue** — play next, add, remove, clear, drag-reorder.
+- **Playlists** — create, rename, delete, add/remove/reorder, M3U/M3U8 import
+  and export.
+- **Search** — instant, grouped by songs/albums/artists/playlists.
+- **Statistics** — listening time, plays, skips, completion, top artists and
+  albums, most played, most skipped.
+- **Settings** — layout, theme, language, music folder, scan with progress and
+  cancel, scan on startup, cover cache size, audio output, service status,
+  keyboard help.
+
+## Layouts
+
+The layout is a root data attribute (`data-layout`) so CSS and screenshots can
+target it deterministically.
+
+| Layout    | Structure                                                   |
+| --------- | ----------------------------------------------------------- |
+| `music`   | fixed sidebar, album-forward content, persistent player bar |
+| `library` | tab rail floated left of a dense list (Foobar-style)        |
+| `minimal` | no sidebar, drawer navigation, compact top bar, Now Playing |
+
+At widths below 760 px the sidebar becomes a drawer for every layout and a
+bottom navigation bar appears; below 340 px of height the page heading collapses
+into the breadcrumb so content rows stay usable at 480×320 and 320×240.
+
+## Input
+
+- **Keyboard** — `Space` play/pause, `←/→` previous/next, `↑/↓` volume,
+  `/` focus search, `Esc` home, `Enter` activate.
+- **Mouse / touch** — every control is a real button; sliders support pointer
+  drag and `role="slider"` keyboard stepping.
+- **Gamepad** — A toggles playback, shoulders skip, D-pad changes volume, left
+  stick jumps between Home and Now Playing. Buttons are edge-triggered so a held
+  button fires once.
+- **Custom controls** — segmented pickers, listbox selects, switches and sliders
+  are all drawn by the app; no native `select` or `input[type=range]` is used, so
+  focus and appearance stay consistent on handhelds and mirrored displays.
+
+## Verification
+
+```sh
+make test          # 19 Go tests, tsc, 16 unit tests, i18n parity (141 keys × 3)
+make bench         # API benchmarks against a 10,000 track library
+make screenshots   # re-capture the matrix + layout audit against a live instance
+```
+
+Tests cover schema migration, scanning and incremental rescans, stale-file
+pruning, metadata import, search grouping and FTS escaping, folder grouping and
+filtering, favourites, queue ordering, play-next, skip counting, completion,
+playback modes, covers (including the generated fallback), LRC and embedded
+lyrics precedence, playlist CRUD, M3U/M3U8 round-trips, settings validation and
+SPA static serving.
+
+Screenshots and the per-page overflow audit are documented in
+[SCREENSHOTS.md](SCREENSHOTS.md).
+
+## Documentation map
+
+- [ARCHITECTURE.md](ARCHITECTURE.md) — layers, playback state machine, providers,
+  PJOS migration path.
+- [DATABASE.md](DATABASE.md) — schema, indexes, FTS5 and scan bookkeeping.
+- [API.md](API.md) — every route, request and response.
+- [ROADMAP.md](ROADMAP.md) — implemented surface and remaining work.
+- [SCREENSHOTS.md](SCREENSHOTS.md) — capture matrix, layout audit, reproduce.

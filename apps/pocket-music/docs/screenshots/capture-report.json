@@ -1,0 +1,692 @@
+[
+  {
+    "file": "home-1280x720-dark.png",
+    "view": "home",
+    "size": "1280x720",
+    "theme": "dark",
+    "proof": "Browse your collection",
+    "audit": {
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "innerWidth": 1280,
+      "innerHeight": 720,
+      "scale": 1,
+      "overflow": []
+    }
+  },
+  {
+    "file": "library-1280x720-dark.png",
+    "view": "library",
+    "size": "1280x720",
+    "theme": "dark",
+    "proof": "01Closing Light 10Nova Lantern·Night Cartography IElectronic",
+    "audit": {
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "innerWidth": 1280,
+      "innerHeight": 720,
+      "scale": 1,
+      "overflow": []
+    }
+  },
+  {
+    "file": "albums-1280x720-dark.png",
+    "view": "albums",
+    "size": "1280x720",
+    "theme": "dark",
+    "proof": "Analogue Summer ILow Tide Radio",
+    "audit": {
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "innerWidth": 1280,
+      "innerHeight": 720,
+      "scale": 1,
+      "overflow": []
+    }
+  },
+  {
+    "file": "artists-1280x720-dark.png",
+    "view": "artists",
+    "size": "1280x720",
+    "theme": "dark",
+    "proof": "AIAiko Sera30 tracks",
+    "audit": {
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "innerWidth": 1280,
+      "innerHeight": 720,
+      "scale": 1,
+      "overflow": []
+    }
+  },
+  {
+    "file": "favorites-1280x720-dark.png",
+    "view": "favorites",
+    "size": "1280x720",
+    "theme": "dark",
+    "proof": "01Small Hours 07Nova Lantern·Night Cartography IElectronic3:",
+    "audit": {
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "innerWidth": 1280,
+      "innerHeight": 720,
+      "scale": 1,
+      "overflow": []
+    }
+  },
+  {
+    "file": "genres-1280x720-dark.png",
+    "view": "genres",
+    "size": "1280x720",
+    "theme": "dark",
+    "proof": "Ambient30",
+    "audit": {
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "innerWidth": 1280,
+      "innerHeight": 720,
+      "scale": 1,
+      "overflow": []
+    }
+  },
+  {
+    "file": "folders-1280x720-dark.png",
+    "view": "folders",
+    "size": "1280x720",
+    "theme": "dark",
+    "proof": "present",
+    "audit": {
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "innerWidth": 1280,
+      "innerHeight": 720,
+      "scale": 1,
+      "overflow": []
+    }
+  },
+  {
+    "file": "album-detail-1280x720-dark.png",
+    "view": "album-detail",
+    "size": "1280x720",
+    "theme": "dark",
+    "proof": "Night Cartography I",
+    "audit": {
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "innerWidth": 1280,
+      "innerHeight": 720,
+      "scale": 1,
+      "overflow": []
+    }
+  },
+  {
+    "file": "artist-detail-1280x720-dark.png",
+    "view": "artist-detail",
+    "size": "1280x720",
+    "theme": "dark",
+    "proof": "Nova Lantern",
+    "audit": {
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "innerWidth": 1280,
+      "innerHeight": 720,
+      "scale": 1,
+      "overflow": []
+    }
+  },
+  {
+    "file": "now-playing-1280x720-dark.png",
+    "view": "now-playing",
+    "size": "1280x720",
+    "theme": "dark",
+    "proof": "Opening Light 11",
+    "audit": {
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "innerWidth": 1280,
+      "innerHeight": 720,
+      "scale": 1,
+      "overflow": []
+    }
+  },
+  {
+    "file": "queue-1280x720-dark.png",
+    "view": "queue",
+    "size": "1280x720",
+    "theme": "dark",
+    "proof": "Opening Light 21Nova Lantern·Slow Machines IIIJazz4:52",
+    "audit": {
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "innerWidth": 1280,
+      "innerHeight": 720,
+      "scale": 1,
+      "overflow": []
+    }
+  },
+  {
+    "file": "playlists-1280x720-dark.png",
+    "view": "playlists",
+    "size": "1280x720",
+    "theme": "dark",
+    "proof": "FFocus Session7 tracks",
+    "audit": {
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "innerWidth": 1280,
+      "innerHeight": 720,
+      "scale": 1,
+      "overflow": []
+    }
+  },
+  {
+    "file": "playlist-1280x720-dark.png",
+    "view": "playlist",
+    "size": "1280x720",
+    "theme": "dark",
+    "proof": "present",
+    "audit": {
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "innerWidth": 1280,
+      "innerHeight": 720,
+      "scale": 1,
+      "overflow": []
+    }
+  },
+  {
+    "file": "search-1280x720-dark.png",
+    "view": "search",
+    "size": "1280x720",
+    "theme": "dark",
+    "proof": "01Closing Light 160Vesper Lane·Tidal Rooms ILo-Fi4:41",
+    "audit": {
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "innerWidth": 1280,
+      "innerHeight": 720,
+      "scale": 1,
+      "overflow": []
+    }
+  },
+  {
+    "file": "settings-1280x720-dark.png",
+    "view": "settings",
+    "size": "1280x720",
+    "theme": "dark",
+    "proof": "AppearanceLayoutMusic · Library · MinimalMusicLibraryMinimal",
+    "audit": {
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "innerWidth": 1280,
+      "innerHeight": 720,
+      "scale": 1,
+      "overflow": []
+    }
+  },
+  {
+    "file": "stats-1280x720-dark.png",
+    "view": "stats",
+    "size": "1280x720",
+    "theme": "dark",
+    "proof": "Listening time23 h 26 minPlays386Skips66Completion73%Songs24",
+    "audit": {
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "innerWidth": 1280,
+      "innerHeight": 720,
+      "scale": 1,
+      "overflow": []
+    }
+  },
+  {
+    "file": "home-1280x720-light.png",
+    "view": "home",
+    "size": "1280x720",
+    "theme": "light",
+    "proof": "Browse your collection",
+    "audit": {
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "innerWidth": 1280,
+      "innerHeight": 720,
+      "scale": 1,
+      "overflow": []
+    }
+  },
+  {
+    "file": "library-1280x720-light.png",
+    "view": "library",
+    "size": "1280x720",
+    "theme": "light",
+    "proof": "01Closing Light 10Nova Lantern·Night Cartography IElectronic",
+    "audit": {
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "innerWidth": 1280,
+      "innerHeight": 720,
+      "scale": 1,
+      "overflow": []
+    }
+  },
+  {
+    "file": "albums-1280x720-light.png",
+    "view": "albums",
+    "size": "1280x720",
+    "theme": "light",
+    "proof": "Analogue Summer ILow Tide Radio",
+    "audit": {
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "innerWidth": 1280,
+      "innerHeight": 720,
+      "scale": 1,
+      "overflow": []
+    }
+  },
+  {
+    "file": "now-playing-1280x720-light.png",
+    "view": "now-playing",
+    "size": "1280x720",
+    "theme": "light",
+    "proof": "Opening Light 11",
+    "audit": {
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "innerWidth": 1280,
+      "innerHeight": 720,
+      "scale": 1,
+      "overflow": []
+    }
+  },
+  {
+    "file": "playlist-1280x720-light.png",
+    "view": "playlist",
+    "size": "1280x720",
+    "theme": "light",
+    "proof": "present",
+    "audit": {
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "innerWidth": 1280,
+      "innerHeight": 720,
+      "scale": 1,
+      "overflow": []
+    }
+  },
+  {
+    "file": "search-1280x720-light.png",
+    "view": "search",
+    "size": "1280x720",
+    "theme": "light",
+    "proof": "01Closing Light 160Vesper Lane·Tidal Rooms ILo-Fi4:41",
+    "audit": {
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "innerWidth": 1280,
+      "innerHeight": 720,
+      "scale": 1,
+      "overflow": []
+    }
+  },
+  {
+    "file": "settings-1280x720-light.png",
+    "view": "settings",
+    "size": "1280x720",
+    "theme": "light",
+    "proof": "AppearanceLayoutMusic · Library · MinimalMusicLibraryMinimal",
+    "audit": {
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "innerWidth": 1280,
+      "innerHeight": 720,
+      "scale": 1,
+      "overflow": []
+    }
+  },
+  {
+    "file": "home-1920x1080-dark.png",
+    "view": "home",
+    "size": "1920x1080",
+    "theme": "dark",
+    "proof": "Browse your collection",
+    "audit": {
+      "scrollWidth": 1920,
+      "clientWidth": 1920,
+      "innerWidth": 1920,
+      "innerHeight": 1080,
+      "scale": 1,
+      "overflow": []
+    }
+  },
+  {
+    "file": "now-playing-1920x1080-dark.png",
+    "view": "now-playing",
+    "size": "1920x1080",
+    "theme": "dark",
+    "proof": "Opening Light 11",
+    "audit": {
+      "scrollWidth": 1920,
+      "clientWidth": 1920,
+      "innerWidth": 1920,
+      "innerHeight": 1080,
+      "scale": 1,
+      "overflow": []
+    }
+  },
+  {
+    "file": "home-720x720-dark.png",
+    "view": "home",
+    "size": "720x720",
+    "theme": "dark",
+    "proof": "Browse your collection",
+    "audit": {
+      "scrollWidth": 720,
+      "clientWidth": 720,
+      "innerWidth": 720,
+      "innerHeight": 720,
+      "scale": 1,
+      "overflow": []
+    }
+  },
+  {
+    "file": "now-playing-720x720-dark.png",
+    "view": "now-playing",
+    "size": "720x720",
+    "theme": "dark",
+    "proof": "Opening Light 11",
+    "audit": {
+      "scrollWidth": 720,
+      "clientWidth": 720,
+      "innerWidth": 720,
+      "innerHeight": 720,
+      "scale": 1,
+      "overflow": []
+    }
+  },
+  {
+    "file": "settings-720x720-dark.png",
+    "view": "settings",
+    "size": "720x720",
+    "theme": "dark",
+    "proof": "AppearanceLayoutMusic · Library · MinimalMusicLibraryMinimal",
+    "audit": {
+      "scrollWidth": 720,
+      "clientWidth": 720,
+      "innerWidth": 720,
+      "innerHeight": 720,
+      "scale": 1,
+      "overflow": []
+    }
+  },
+  {
+    "file": "albums-720x720-dark.png",
+    "view": "albums",
+    "size": "720x720",
+    "theme": "dark",
+    "proof": "Analogue Summer ILow Tide Radio",
+    "audit": {
+      "scrollWidth": 720,
+      "clientWidth": 720,
+      "innerWidth": 720,
+      "innerHeight": 720,
+      "scale": 1,
+      "overflow": []
+    }
+  },
+  {
+    "file": "home-720x720-light.png",
+    "view": "home",
+    "size": "720x720",
+    "theme": "light",
+    "proof": "Browse your collection",
+    "audit": {
+      "scrollWidth": 720,
+      "clientWidth": 720,
+      "innerWidth": 720,
+      "innerHeight": 720,
+      "scale": 1,
+      "overflow": []
+    }
+  },
+  {
+    "file": "home-640x480-dark.png",
+    "view": "home",
+    "size": "640x480",
+    "theme": "dark",
+    "proof": "Browse your collection",
+    "audit": {
+      "scrollWidth": 640,
+      "clientWidth": 640,
+      "innerWidth": 640,
+      "innerHeight": 480,
+      "scale": 1,
+      "overflow": []
+    }
+  },
+  {
+    "file": "library-640x480-dark.png",
+    "view": "library",
+    "size": "640x480",
+    "theme": "dark",
+    "proof": "01Closing Light 10Nova Lantern·Night Cartography IElectronic",
+    "audit": {
+      "scrollWidth": 640,
+      "clientWidth": 640,
+      "innerWidth": 640,
+      "innerHeight": 480,
+      "scale": 1,
+      "overflow": []
+    }
+  },
+  {
+    "file": "now-playing-640x480-dark.png",
+    "view": "now-playing",
+    "size": "640x480",
+    "theme": "dark",
+    "proof": "Opening Light 11",
+    "audit": {
+      "scrollWidth": 640,
+      "clientWidth": 640,
+      "innerWidth": 640,
+      "innerHeight": 480,
+      "scale": 1,
+      "overflow": []
+    }
+  },
+  {
+    "file": "home-480x320-dark.png",
+    "view": "home",
+    "size": "480x320",
+    "theme": "dark",
+    "proof": "Browse your collection",
+    "audit": {
+      "scrollWidth": 480,
+      "clientWidth": 480,
+      "innerWidth": 480,
+      "innerHeight": 320,
+      "scale": 1,
+      "overflow": []
+    }
+  },
+  {
+    "file": "library-480x320-dark.png",
+    "view": "library",
+    "size": "480x320",
+    "theme": "dark",
+    "proof": "01Closing Light 10Nova Lantern·Night Cartography IElectronic",
+    "audit": {
+      "scrollWidth": 480,
+      "clientWidth": 480,
+      "innerWidth": 480,
+      "innerHeight": 320,
+      "scale": 1,
+      "overflow": []
+    }
+  },
+  {
+    "file": "now-playing-480x320-dark.png",
+    "view": "now-playing",
+    "size": "480x320",
+    "theme": "dark",
+    "proof": "Opening Light 11",
+    "audit": {
+      "scrollWidth": 480,
+      "clientWidth": 480,
+      "innerWidth": 480,
+      "innerHeight": 320,
+      "scale": 1,
+      "overflow": []
+    }
+  },
+  {
+    "file": "settings-480x320-dark.png",
+    "view": "settings",
+    "size": "480x320",
+    "theme": "dark",
+    "proof": "AppearanceLayoutMusic · Library · MinimalMusicLibraryMinimal",
+    "audit": {
+      "scrollWidth": 480,
+      "clientWidth": 480,
+      "innerWidth": 480,
+      "innerHeight": 320,
+      "scale": 1,
+      "overflow": []
+    }
+  },
+  {
+    "file": "home-480x320-light.png",
+    "view": "home",
+    "size": "480x320",
+    "theme": "light",
+    "proof": "Browse your collection",
+    "audit": {
+      "scrollWidth": 480,
+      "clientWidth": 480,
+      "innerWidth": 480,
+      "innerHeight": 320,
+      "scale": 1,
+      "overflow": []
+    }
+  },
+  {
+    "file": "home-320x240-dark.png",
+    "view": "home",
+    "size": "320x240",
+    "theme": "dark",
+    "proof": "Browse your collection",
+    "audit": {
+      "scrollWidth": 320,
+      "clientWidth": 320,
+      "innerWidth": 320,
+      "innerHeight": 240,
+      "scale": 1,
+      "overflow": []
+    }
+  },
+  {
+    "file": "library-320x240-dark.png",
+    "view": "library",
+    "size": "320x240",
+    "theme": "dark",
+    "proof": "01Closing Light 10Nova Lantern·Night Cartography IElectronic",
+    "audit": {
+      "scrollWidth": 320,
+      "clientWidth": 320,
+      "innerWidth": 320,
+      "innerHeight": 240,
+      "scale": 1,
+      "overflow": []
+    }
+  },
+  {
+    "file": "now-playing-320x240-dark.png",
+    "view": "now-playing",
+    "size": "320x240",
+    "theme": "dark",
+    "proof": "Opening Light 11",
+    "audit": {
+      "scrollWidth": 320,
+      "clientWidth": 320,
+      "innerWidth": 320,
+      "innerHeight": 240,
+      "scale": 1,
+      "overflow": []
+    }
+  },
+  {
+    "file": "queue-320x240-dark.png",
+    "view": "queue",
+    "size": "320x240",
+    "theme": "dark",
+    "proof": "Opening Light 21Nova Lantern·Slow Machines IIIJazz4:52",
+    "audit": {
+      "scrollWidth": 320,
+      "clientWidth": 320,
+      "innerWidth": 320,
+      "innerHeight": 240,
+      "scale": 1,
+      "overflow": []
+    }
+  },
+  {
+    "file": "home-320x240-light.png",
+    "view": "home",
+    "size": "320x240",
+    "theme": "light",
+    "proof": "Browse your collection",
+    "audit": {
+      "scrollWidth": 320,
+      "clientWidth": 320,
+      "innerWidth": 320,
+      "innerHeight": 240,
+      "scale": 1,
+      "overflow": []
+    }
+  },
+  {
+    "file": "home-1280x720-dark-1.5x.png",
+    "view": "home",
+    "size": "1280x720-1.5x",
+    "theme": "dark",
+    "proof": "dpi",
+    "audit": {
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "innerWidth": 1280,
+      "innerHeight": 720,
+      "scale": 1.5,
+      "overflow": []
+    }
+  },
+  {
+    "file": "home-1280x720-dark-2x.png",
+    "view": "home",
+    "size": "1280x720-2x",
+    "theme": "dark",
+    "proof": "dpi",
+    "audit": {
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "innerWidth": 1280,
+      "innerHeight": 720,
+      "scale": 2,
+      "overflow": []
+    }
+  },
+  {
+    "file": "home-1280x720-dark-3x.png",
+    "view": "home",
+    "size": "1280x720-3x",
+    "theme": "dark",
+    "proof": "dpi",
+    "audit": {
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "innerWidth": 1280,
+      "innerHeight": 720,
+      "scale": 3,
+      "overflow": []
+    }
+  }
+]

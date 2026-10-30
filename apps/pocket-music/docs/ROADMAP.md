@@ -1,42 +1,70 @@
 # Roadmap
 
-Status reflects integration evidence captured on 2026-10-30 from the running application, direct API calls, tests, benchmark, and Chromium screenshots.
+Status legend: **done** = implemented and covered by tests/screenshots in this
+repository; **partial** = functional but limited; **planned** = designed, not
+implemented.
 
-## Implemented in the current source
+## Delivered
 
-- [x] Root Makefile provides combined development startup and backend/frontend check targets.
-- [x] Go service initialization creates SQLite tables, indexes, FTS5, and a version 1 marker; this is not yet a sequential migration framework.
-- [x] Local scanner walks the configured root, recognizes MP3, FLAC, AAC, M4A, OGG, WAV, and APE, and invokes ffprobe for metadata.
-- [x] Scan start/status/cancel routes and progress state are present.
-- [x] Song listing is paginated and title ordered; FTS5 supports song search.
-- [x] Mock seeding creates deterministic sample artists, albums, and tracks when the database is empty.
-- [x] HTTP routes cover library, playlists, favorites, player state/actions, queue, settings, scan, media, lyrics, and stats.
-- [x] mpv uses JSON IPC and `--ao=null` by default; `/api/player/state` synchronizes position, duration, pause, and completion for local tracks.
+| Area | State | Evidence |
+| --- | --- | --- |
+| Service boundary (UI → `musicd` → SQLite/mpv) | done | `docs/ARCHITECTURE.md`, API tests |
+| SQLite schema, FTS5 index, migrations | done | `TestMigrationAndCoreAPI`, `docs/DATABASE.md` |
+| Scanner: MP3/FLAC/AAC/M4A/OGG/WAV/APE, incremental, prune, cancel | done | `TestScanIncrementalAndCancellation`, `TestScanRemovesDeletedFilesAndReportsProgress` |
+| Metadata extraction (ffprobe) with sensible fallbacks | done | scan tests, demo library |
+| Library: songs (paged), albums, artists, genres, folders, favourites | done | `TestFoldersGroupingAndFiltering`, screenshots |
+| Search: instant, grouped, FTS-escaped, bounded preview | done | `TestSearchGroupsAndFilters`, benchmarks |
+| Playback: play/pause/seek/volume, modes, queue engine | done | `TestPlaybackModesQueueOperationsAndSkipAccounting` |
+| Skip count and completion rate accounting | done | same test |
+| Queue: play next, add, remove, reorder, clear | done | queue test, queue screenshot |
+| Favourites: tracks, albums, artists | done | `TestFavoritesLifecycleAndHomeSections` |
+| Playlists: CRUD, ordering, M3U/M3U8 import and export | done | `TestPlaylistM3URoundTripAndMalformedRollback`, `TestImportM3U8WithBOMAndRelativePaths` |
+| Covers: stored, `folder.jpg`/`cover.jpg`, embedded, generated | done | `TestCoverLyricsAndArtistAlbumDetail` |
+| Lyrics: LRC files, embedded tags, synced highlight | done | `TestLyricsFileTakesPrecedence`, now-playing screenshots |
+| Statistics: play time, plays, skips, completion, top artists/albums | done | `TestStatsAggregatesHistory`, stats screenshot |
+| Settings: layout, theme, language, folder, scan, cache, audio output | done | `TestSettingsValidationAndStaticServing`, settings screenshots |
+| i18n: English, 简体中文, 日本語 | done | `i18n-contract.ts` (141 keys × 3) |
+| Responsive 320×240 → 1920×1080, DPI 1×/1.5×/2×/3× | done | 46 screenshots, 0 layout failures |
+| Input: mouse, touch, keyboard, gamepad | done | `App.tsx` handlers, live interaction at 320×240 |
+| Single-binary desktop build | done | `TestSettingsValidationAndStaticServing` (SPA fallback), `make serve` |
+| 10,000 track performance | done | `make bench` (see ARCHITECTURE) |
 
-## Verification completed
+## Partial
 
-- [x] `make test` passed: Go tests pass and TypeScript `tsc --noEmit` exits zero.
-- [x] `npm --prefix apps/pocket-music/frontend run build` passed.
-- [x] Direct curl checks covered health, home, library collections, search, playlists, settings, playback, queue, scan status, and stats.
-- [x] Generated a 2-second WAV with ffmpeg; scan indexed its title, artist, album, year, duration, and path.
-- [x] 10,000-row paired search/list benchmark: 23.35 ms/op (single iteration, see README).
-- [x] Chromium exercised the Home, Library, playback, queue, and Settings flows at 320×240; screenshots cover all named views, Light/Dark examples, and all required viewport dimensions.
-- [x] Six viewports (320×240, 480×320, 640×480, 720×720, 1280×720, 1920×1080) showed no horizontal overflow; 1x/1.5x/2x/3x DPI were measured at 480×320 with identical row height and font size.
-- [x] Keyboard Space/Arrow/Escape navigation and Gamepad API button/axis handling were exercised. Gamepad input is edge-triggered: holding a button fires once.
-- [x] Favorites for track/album/artist, queue add/play_next/reorder/remove, and M3U export→import round-trip (2 tracks) were executed against the running service.
+| Area | Gap |
+| --- | --- |
+| Audio engine | mpv is launched and controlled over IPC; no gapless playback or crossfade, and no ReplayGain/dynamic range handling |
+| Gamepad | Transport and volume are mapped; full D-pad focus traversal (launcher-style) is not |
+| Cover cache | size setting is stored and surfaced but not yet enforced as an eviction policy |
+| Playlist import | matches by absolute path then path tail; no re-link UI for missing entries |
+| Folder browsing | flat two-level grouping; no nested tree or breadcrumb navigation |
 
-## Remaining work
+## Planned
 
-- [ ] Validate on physical DAP/handheld hardware and with a real analog audio output device.
-- [ ] Add and execute a true multi-version schema migration path; current database startup initializes schema version 1.
+1. **Remote providers** — implement `BilibiliProvider`, `NavidromeProvider` and
+   `JellyfinProvider` behind `MusicProvider` (credentials stay service-side,
+   items land in the same tables, UI unchanged).
+2. **PJOS runtime adapter** — a PocketJS client over the same API, with device
+   profiles for 320×240, 480×320 and 720×720 panels, `onFrame` input mapping and
+   KMS rendering.
+3. **DAP hardware profile** — physical button map, rotary volume, hold switch,
+   safe-shutdown handling, battery in the status bar.
+4. **Library intelligence** — smart playlists (most played, never played, recent
+   additions), duplicate detection, multi-disc handling, embedded composer/work
+   tags for classical libraries.
+5. **Playback depth** — gapless/crossfade, ReplayGain, output device hot-swap,
+   sleep timer.
+6. **Sync** — provider-backed download/upload queue with conflict resolution and
+   offline pinning for handhelds.
+7. **Accessibility** — full screen-reader pass, high-contrast theme, reduced
+   motion is already honoured by CSS.
+8. **Packaging** — `.deb`/AppImage with a bundled service, plus a Flatpak
+   manifest; currently the single binary is built from source.
 
 ## Known limitations
 
-Remote Bilibili, Navidrome, and Jellyfin providers are extension points documented in [ARCHITECTURE.md](ARCHITECTURE.md) and are not implemented. On this host the audio engine runs with `--ao=null`; playback state and EOF progression are verified, but no sound is emitted.
-
-## Future PJOS migration
-
-1. Keep UI workflows behind the `musicd` API contract.
-2. Replace Vite development hosting with target PJOS runtime integration while preserving API semantics.
-3. Validate transport, focus/input handling, storage configuration, and media rendering on each target device.
-4. Add device-specific local and remote providers without moving service responsibilities into UI code.
+- Audio output is whatever mpv and the host provide; the default `null` sink
+  keeps CI and headless hosts working but produces no sound.
+- Demo-mode tracks are metadata only, so `/api/media/{id}` returns 404 for them.
+- The PocketJS adapter and hardware verification are out of scope for this
+  repository; desktop Linux is the shipped target.
