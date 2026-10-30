@@ -98,11 +98,22 @@ func pagination(r *http.Request) (page, limit int) {
 func (s *Server) songs(w http.ResponseWriter, r *http.Request) {
 	page, limit := pagination(r)
 	q := strings.TrimSpace(r.URL.Query().Get("q"))
-	where := ""
+	folder := strings.TrimSpace(r.URL.Query().Get("folder"))
+	conditions := []string{}
 	args := []any{}
 	if q != "" {
-		where = ` WHERE t.id IN (SELECT track_id FROM tracks_fts WHERE tracks_fts MATCH ?)`
+		conditions = append(conditions, `t.id IN (SELECT track_id FROM tracks_fts WHERE tracks_fts MATCH ?)`)
 		args = append(args, ftsQuery(q))
+	}
+	if folder != "" && folder != "." && folder != "/" {
+		// Real libraries carry absolute paths; demo rows are prefixed with
+		// "mock:" so the artist/album tail needs its own pattern.
+		conditions = append(conditions, `(t.path LIKE ? OR t.path LIKE ?)`)
+		args = append(args, `%/`+folder+`/%`, `mock:`+folder+`/%`)
+	}
+	where := ""
+	if len(conditions) > 0 {
+		where = " WHERE " + strings.Join(conditions, " AND ")
 	}
 	var total int
 	s.db.QueryRow(`SELECT count(*) FROM tracks t`+where, args...).Scan(&total)
@@ -210,7 +221,7 @@ func (s *Server) collections(w http.ResponseWriter, r *http.Request, p string) {
 		for rows.Next() {
 			var path string
 			rows.Scan(&path)
-			dir := filepath.Dir(path)
+			dir := strings.TrimPrefix(filepath.Dir(path), "mock:")
 			if s.root != "" && strings.HasPrefix(dir, s.root) {
 				if rel, err := filepath.Rel(s.root, dir); err == nil {
 					dir = rel

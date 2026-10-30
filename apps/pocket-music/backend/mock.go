@@ -67,9 +67,13 @@ func (s *Server) seedMock() {
 					"Static Bloom", "Night Bus", "Small Hours", "Soft Focus", "Tidal", "Closing Light"}[t%10], processed)
 				duration := 118 + float64(rng.Intn(190))
 				days := rng.Intn(120)
+				// Demo paths mirror a real Artist/Album layout so the Folders view
+				// has something meaningful to group; the mock: prefix keeps the
+				// scanner, media and cover handlers from touching the filesystem.
+				mockPath := fmt.Sprintf("mock:%s/%s/%02d %s.mp3", artist, album, t+1, title)
 				tx.Exec(`INSERT OR IGNORE INTO tracks(id,title,artist_id,album_id,genre,year,duration,path,track_no,added_at)
 					VALUES(?,?,?,?,?,?,?,?,?,datetime('now',?))`,
-					id, title, artistID, albumID, genre, year, duration, "mock:"+id, t+1, fmt.Sprintf("-%d days", days))
+					id, title, artistID, albumID, genre, year, duration, mockPath, t+1, fmt.Sprintf("-%d days", days))
 				tx.Exec(`INSERT OR IGNORE INTO tracks_fts(track_id,title,artist,album,genre) VALUES(?,?,?,?,?)`,
 					id, title, artist, album, genre)
 

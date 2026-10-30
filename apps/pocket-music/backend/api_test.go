@@ -8,6 +8,7 @@ import (
 	"mime/multipart"
 	"net/http"
 	"net/http/httptest"
+	"net/url"
 	"os"
 	"path/filepath"
 	"strings"
@@ -486,5 +487,57 @@ func BenchmarkAPIAlbums10K(b *testing.B) {
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		benchGET(b, handler, "/api/library/albums")
+	}
+}
+
+type songPageResult struct {
+	Items []Track `json:"items"`
+	Total int     `json:"total"`
+	Page  int     `json:"page"`
+	Limit int     `json:"limit"`
+}
+
+func TestFoldersGroupingAndFiltering(t *testing.T) {
+	s := testServer(t)
+	folders := decode[struct {
+		Items []struct {
+			Name  string `json:"name"`
+			Count int    `json:"track_count"`
+		} `json:"items"`
+	}](t, call(t, s, "GET", "library/folders", ""))
+	if len(folders.Items) != mockArtistCount*mockAlbumsPerArtist {
+		t.Fatalf("folder groups = %d, want %d", len(folders.Items), mockArtistCount*mockAlbumsPerArtist)
+	}
+	name := folders.Items[0].Name
+	if !strings.Contains(name, "/") {
+		t.Fatalf("folder group not artist/album shaped: %q", name)
+	}
+	for _, folder := range folders.Items {
+		if folder.Count != mockTracksPerAlbum {
+			t.Fatalf("folder %q count=%d", folder.Name, folder.Count)
+		}
+	}
+	page := decode[songPageResult](t, call(t, s, "GET", "library/songs?limit=500&folder="+url.QueryEscape(name), ""))
+	if page.Total != mockTracksPerAlbum || len(page.Items) != mockTracksPerAlbum {
+		t.Fatalf("folder filter total=%d items=%d", page.Total, len(page.Items))
+	}
+	for _, track := range page.Items {
+		if !strings.HasPrefix(track.Path, "mock:") || !strings.Contains(track.Path, name) {
+			t.Fatalf("folder filter leaked track %q", track.Path)
+		}
+	}
+	// A folder filter combined with a text query must intersect, not union.
+	both := decode[songPageResult](t, call(t, s, "GET", "library/songs?limit=500&folder="+url.QueryEscape(name)+"&q=Drift", ""))
+	if both.Total >= page.Total && both.Total != 0 {
+		t.Fatalf("query+folder did not narrow results: %d vs %d", both.Total, page.Total)
+	}
+	// Paging keeps a stable total and shrinks the page size.
+	first := decode[songPageResult](t, call(t, s, "GET", "library/songs?page=1&limit=10", ""))
+	second := decode[songPageResult](t, call(t, s, "GET", "library/songs?page=2&limit=10", ""))
+	if first.Total != mockTrackCount || len(first.Items) != 10 || len(second.Items) != 10 {
+		t.Fatalf("paging: total=%d first=%d second=%d", first.Total, len(first.Items), len(second.Items))
+	}
+	if first.Items[0].ID == second.Items[0].ID {
+		t.Fatal("page 2 repeated page 1")
 	}
 }
