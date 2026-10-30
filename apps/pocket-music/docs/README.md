@@ -13,13 +13,13 @@ make dev
 
 Open <http://127.0.0.1:5173>. The frontend uses Vite on port 5173 and proxies `/api` to `127.0.0.1:8765`. The Go service listens on `:8765` by default. Stop the services with Ctrl-C. `MUSICD_ADDR` overrides the backend listen address.
 
-`make test` runs backend `go test ./...` followed by the frontend `typecheck` script. This documentation does not assert those checks have been run or passed.
+`make test` runs backend `go test ./...`, the frontend `typecheck` script, and an esbuild-bundled check that the English, Simplified Chinese, and Japanese catalogs have identical keys. It passed on 2026-10-30.
 
 ## Library configuration
 
-The service reads `MUSICD_ADDR`, `MUSICD_DB`, `MUSICD_MUSIC_DIR`, `MUSICD_MOCK`, `MUSICD_MPV`, and `MUSICD_AO`. Current Go defaults are `:8765`, `musicd.db`, `$HOME/Music`, mock disabled, and audio output `null`. The health response reports provider, mock status, and audio status/output. Confirm the runtime behavior of mpv configuration during integration.
+The service reads `MUSICD_ADDR`, `MUSICD_DB`, `MUSICD_MUSIC_DIR`, `MUSICD_MOCK`, `MUSICD_MPV`, and `MUSICD_AO`. Defaults are `:8765`, `musicd.db`, `$HOME/Music`, mock disabled, and `--ao=null` audio output. The health response reports provider, mock status, and audio status/output.
 
-Set `MUSICD_MOCK=true` to seed a deterministic demo library when the database has no tracks: currently 64 demo tracks, eight artists, and eight albums. For a real library, set `MUSICD_MUSIC_DIR` and start scanning through the API. The scanner accepts MP3, FLAC, AAC, M4A, OGG, WAV, and APE and invokes ffprobe for metadata. Playback and scanning behavior still need runtime evidence.
+Set `MUSICD_MOCK=true` to seed a deterministic demo library when the database has no tracks: 64 demo tracks, eight artists, and eight albums. For a real library, set `MUSICD_MUSIC_DIR` and scan through `POST /api/scan`. The scanner accepts MP3, FLAC, AAC, M4A, OGG, WAV, and APE and uses ffprobe for metadata. A generated 2-second WAV was scanned into a temp directory with correct title, artist, album, year, genre, duration, and path; playback with `--ao=null` advanced the position and fired completion/queue advancement.
 
 ## Screenshots and performance
 
