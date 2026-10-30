@@ -722,6 +722,10 @@ input[type=range] {
   gap: .35rem;
   border-bottom: 1px solid var(--line);
   margin: 0 0 1rem;
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: auto;
+  scrollbar-width: none;
 }
 .tabs button {
   padding: .6rem .75rem;
@@ -758,15 +762,44 @@ input[type=range] {
   overflow:hidden}
 .layout-minimal {
   --sidebar:0rem;
-  --player:4.4rem}
+  --player:4.4rem;
+  padding-left:0}
+.layout-minimal .sidebar {
+  display:flex;
+  width:min(84vw,17rem);
+  transform:translateX(-100%);
+  transition:transform .18s ease;
+  background:var(--panel);
+  border-right:1px solid var(--line)}
+.layout-minimal .sidebar.drawer-open {
+  transform:translateX(0);
+  box-shadow:var(--shadow)}
 .layout-minimal .main-area {
   padding-bottom:2.6rem}
 .layout-minimal .topbar {
-  height:3.4rem}
+  height:3.6rem;
+  padding:0 .8rem}
 .layout-minimal .view-content {
-  padding:1rem .8rem}
+  max-width:none;
+  padding:1rem .9rem 2rem}
+.layout-minimal .mobile-brand {
+  display:flex;
+  align-items:center;
+  gap:.5rem}
+.layout-minimal .mobile-brand .brand-mark {
+  border:0;
+  background:none;
+  color:var(--accent);
+  cursor:pointer}
+.layout-minimal .mobile-brand b {
+  font-size:.82rem}
+.layout-minimal .breadcrumbs {
+  display:none}
+.layout-minimal .now-page {
+  min-height:calc(100vh - 9rem)}
 .layout-minimal .player-bar {
-  height:var(--player)}
+  height:var(--player);
+  background:var(--panel)}
 [data-theme=light] {
   --bg:#f3f3ee;
   --panel:#fff;
@@ -917,9 +950,9 @@ input[type=range] {
 .page-heading {
   margin:.6rem 0 1rem}
 .tabs {
-  margin-left:-.9rem;
-  margin-right:-.9rem;
-  padding:0 .6rem}
+  margin-left:0;
+  margin-right:0;
+  padding:0}
 .now-page {
   min-height:auto;
   grid-template-columns:1fr;
