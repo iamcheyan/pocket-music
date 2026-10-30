@@ -87,6 +87,12 @@ type mpvClient struct {
 func newMPV() *mpvClient {
 	return &mpvClient{socket: filepath.Join(os.TempDir(), fmt.Sprintf("musicd-%d.sock", os.Getpid())), output: env("MUSICD_AO", "null")}
 }
+func (m *mpvClient) outputName() string {
+	m.mu.Lock()
+	defer m.mu.Unlock()
+	return m.output
+}
+
 func (m *mpvClient) setOutput(output string) {
 	m.mu.Lock()
 	defer m.mu.Unlock()

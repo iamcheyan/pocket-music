@@ -14,7 +14,7 @@ type ScanProgress struct {
 	Found, Total int
 	Current      string
 }
-type ScanResult struct{ Found, Updated, Skipped int }
+type ScanResult struct{ Found, Updated, Skipped, Removed int }
 type MusicProvider interface {
 	Name() string
 	Scan(context.Context, func(ScanProgress)) (ScanResult, error)

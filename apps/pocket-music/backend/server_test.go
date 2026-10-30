@@ -47,10 +47,10 @@ func TestMigrationAndCoreAPI(t *testing.T) {
 		t.Fatalf("health: %d %s", w.Code, w.Body)
 	}
 	var songs map[string]any
-	if e := json.Unmarshal(call(t, s, "GET", "library/songs?limit=20", "").Body.Bytes(), &songs); e != nil || songs["total"].(float64) != 64 {
+	if e := json.Unmarshal(call(t, s, "GET", "library/songs?limit=20", "").Body.Bytes(), &songs); e != nil || int(songs["total"].(float64)) != mockTrackCount {
 		t.Fatalf("library: %v", e)
 	}
-	if w := call(t, s, "GET", "search?q=Demo&type=song", ""); !strings.Contains(w.Body.String(), "Demo Track") {
+	if w := call(t, s, "GET", "search?q=Opening&type=song", ""); !strings.Contains(w.Body.String(), "Opening") {
 		t.Fatalf("search: %s", w.Body)
 	}
 }
@@ -82,9 +82,11 @@ func TestPlaylistQueueSettingsFavorites(t *testing.T) {
 	if w.Code != http.StatusOK || s.root != newFolder || s.mpv.output != "alsa" {
 		t.Fatalf("runtime settings: %d root=%q output=%q", w.Code, s.root, s.mpv.output)
 	}
-	call(t, s, "POST", "favorites", `{"kind":"track","id":"mock-001"}`)
+	if w := call(t, s, "POST", "favorites", `{"kind":"track","id":"mock-001"}`); w.Code != http.StatusOK {
+		t.Fatalf("favorite add: %d %s", w.Code, w.Body)
+	}
 	var n int
-	s.db.QueryRow(`SELECT count(*) FROM favorites`).Scan(&n)
+	s.db.QueryRow(`SELECT count(*) FROM favorites WHERE kind='track' AND entity_id='mock-001'`).Scan(&n)
 	if n != 1 {
 		t.Fatal("favorite not stored")
 	}
