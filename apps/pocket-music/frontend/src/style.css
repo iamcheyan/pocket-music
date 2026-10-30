@@ -221,7 +221,7 @@ button:disabled {
 .view-content {
   max-width:1450px;
   margin:0 auto;
-  padding:clamp(1.25rem,3vw,2.8rem) clamp(1.1rem,3vw,3.1rem) 3rem}
+  padding:clamp(1.25rem,3vw,2.8rem) clamp(1.1rem,3vw,3.1rem) calc(var(--player) + 3rem)}
 .hero {
   min-height:clamp(13rem,29vw,22rem);
   border-radius:1.3rem;
@@ -593,7 +593,7 @@ input[type=range] {
   border-radius:1rem;
   padding:0 1.3rem}
 .setting-row {
-  min-height:4.6rem;
+  min-height:3.8rem;
   border-bottom:1px solid var(--line);
   display:flex;
   align-items:center;
@@ -601,7 +601,9 @@ input[type=range] {
   gap:1rem}
 .setting-row>div {
   display:grid;
-  gap:.3rem}
+  gap:.3rem;
+  min-width:0;
+  flex:1}
 .setting-row b {
   font-size:.75rem}
 .setting-row span {
@@ -616,11 +618,13 @@ input[type=range] {
   font-size:.68rem}
 .setting-actions {
   display:flex;
+  flex-wrap:wrap;
   justify-content:flex-end;
   gap:.6rem;
-  padding:1rem 0}
+  padding:1rem 0 1.5rem}
 .small-input {
-  width:min(15rem,45%);
+  width:100%;
+  max-width:22rem;
   font-size:.67rem}
 .status-dot.online {
   background:var(--accent);
