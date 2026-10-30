@@ -101,7 +101,7 @@ records `overflow: []` for every entry.
 - The capture script wrote DPI screenshots as `home-1280x720-dark` + `@1.5x.png` while
   `docs/SCREENSHOTS.md` (and the previously committed files) use the `-1.5x` suffix. Result:
   every DPI capture produced an untracked `@`-prefixed file and left the tracked `-1.5x` images stale.
-  → emit `home-1280x720-dark-<scale>x.png` and `1280x720-<scale>x` labels
+  → emit `home-1280x720-dark-<scale>x` file and `1280x720-<scale>x` labels
   → `apps/pocket-music/scripts/capture-screenshots.mjs` → all three DPI files are regenerated
   and the report filenames match the files on disk (`home-1280x720-dark-1.5x.png`,
   `...-2x.png`, `...-3x.png`).
