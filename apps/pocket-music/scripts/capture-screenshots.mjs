@@ -252,10 +252,10 @@ const main = async () => {
       await cdp.send('Page.navigate', { url: `${base}/?view=home&theme=dark&lang=en` }, sessionId);
       await sleep(900);
       const { result: audit } = await cdp.send('Runtime.evaluate', { expression: AUDIT, returnByValue: true }, sessionId);
-      results.push({ file: `home-1280x720-dark@${scale}x.png`, view: 'home', size: `1280x720@${scale}x`, theme: 'dark', proof: 'dpi', audit: audit.value });
+      results.push({ file: `home-1280x720-dark-${scale}x.png`, view: 'home', size: `1280x720-${scale}x`, theme: 'dark', proof: 'dpi', audit: audit.value });
       if (!auditOnly) {
         const { data } = await cdp.send('Page.captureScreenshot', { format: 'png', captureBeyondViewport: false }, sessionId);
-        await writeFile(join(outDir, `home-1280x720-dark@${scale}x.png`), Buffer.from(data, 'base64'));
+        await writeFile(join(outDir, `home-1280x720-dark-${scale}x.png`), Buffer.from(data, 'base64'));
       }
       console.log(`dpi ${scale}x  css=${audit.value.innerWidth}x${audit.value.innerHeight} dpr=${audit.value.scale} scrollWidth=${audit.value.scrollWidth} overflow=${audit.value.overflow.length}`);
     }

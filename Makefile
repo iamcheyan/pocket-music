@@ -46,7 +46,7 @@ test-frontend:
 
 # Single-binary desktop build: musicd serves the compiled UI from MUSICD_WEB_DIR.
 build:
-	cd $(BACKEND_DIR) && go build -o ../../$(BUILD_DIR)/musicd .
+	cd $(BACKEND_DIR) && go build -o $(abspath $(BUILD_DIR))/musicd .
 	npm --prefix $(FRONTEND_DIR) run build
 
 serve: build
