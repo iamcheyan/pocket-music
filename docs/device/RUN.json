@@ -1,0 +1,17 @@
+{
+  "app": "music",
+  "package_sha256": "b4c7c4faa3329905e95f72654ceb7982e91ee8c80b6114b859814ca1e06219a7",
+  "launcher_before": "15339",
+  "launcher_after": "15746",
+  "boot_sha256": "6ed41612bce1723d1eda64b5a0ee9333a105ed498b7085c03267539cf6c1b32d",
+  "frames": [
+    "home",
+    "home-focus",
+    "detail",
+    "detail-action",
+    "settings",
+    "settings-toggled"
+  ],
+  "runtime": "/mnt/sdcard/System/pocketjs/bin/pocket-linux-kms",
+  "deploy": "/storage/pjs/pocket-music"
+}
